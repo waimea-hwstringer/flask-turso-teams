@@ -33,65 +33,49 @@ def index():
 
 
 #-----------------------------------------------------------
-# About page route
+# Teams page route - Show all the things, and new thing form
 #-----------------------------------------------------------
-@app.get("/about/")
-def about():
-    return render_template("pages/about.jinja")
-
-
-#-----------------------------------------------------------
-# Things page route - Show all the things, and new thing form
-#-----------------------------------------------------------
-@app.get("/things/")
-def show_all_things():
+@app.get("/teams/")
+def show_all_teams():
     with connect_db() as client:
         # Get all the things from the DB
-        sql = """
-            SELECT things.id,
-                   things.name,
-                   users.name AS owner
-
-            FROM things
-            JOIN users ON things.user_id = users.id
-
-            ORDER BY things.name ASC
-        """
+        sql = "SELECT * FROM teams ORDER BY name ASC"
         params=[]
         result = client.execute(sql, params)
-        things = result.rows
+        teams = result.rows
 
         # And show them on the page
-        return render_template("pages/things.jinja", things=things)
+        return render_template("pages/teams.jinja", teams=teams)
 
 
 #-----------------------------------------------------------
 # Thing page route - Show details of a single thing
 #-----------------------------------------------------------
-@app.get("/thing/<int:id>")
-def show_one_thing(id):
+@app.get("/team/<string:code>")
+def show_one_team(code):
     with connect_db() as client:
         # Get the thing details from the DB, including the owner info
         sql = """
-            SELECT things.id,
-                   things.name,
-                   things.price,
-                   things.user_id,
-                   users.name AS owner
+            SELECT teams.code,
+                   teams.name,
+                   teams.description,
+                   teams.website,
+                   teams.manager,
+                   users.id
 
-            FROM things
-            JOIN users ON things.user_id = users.id
+            FROM teams
+            JOIN users ON teams.manager = users.id
 
-            WHERE things.id=?
+            WHERE teams.code=?
         """
-        params = [id]
+        params = [code]
         result = client.execute(sql, params)
 
         # Did we get a result?
         if result.rows:
             # yes, so show it on the page
-            thing = result.rows[0]
-            return render_template("pages/thing.jinja", thing=thing)
+            team = result.rows[0]
+            return render_template("pages/team.jinja", team=team)
 
         else:
             # No, so show error
@@ -145,10 +129,6 @@ def delete_a_thing(id):
         # Go back to the home page
         flash("Thing deleted", "success")
         return redirect("/things")
-
-
-
-
 
 
 

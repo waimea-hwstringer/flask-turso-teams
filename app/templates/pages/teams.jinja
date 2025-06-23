@@ -9,35 +9,29 @@
 
 {% block title %}
 
-    Flask Demo - All Things
+    Teams
 
 {% endblock %}
 
 
 {% block content %}
 
-    <h1>Things...</h1>
+    <h1>Teams</h1>
+        
+    {% for team in teams %}
 
+        <article>
+            <a href="/team/{{ team.code }}">
+            <h1><strong>{{ team.name }}</strong></h1> </a>
+            <h4>{{team.code}}</h4>
+            <p>{{team.description}}</p>
+            <a href="{{team.website}}">{{team.website}}</a>
+        </article>
 
-    <article>
+    {% endfor %}
+        
 
-        <ul>
-            {% for thing in things %}
-
-                <li>
-                    <a href="/thing/{{ thing.id }}">
-                        <strong>{{ thing.name }}</strong> - owned by {{ thing.owner }}
-                    </a>
-                </li>
-
-            {% else %}
-
-                <p>None!</p>
-
-            {% endfor %}
-        </ul>
-
-    </article>
+    
 
 
     {# Only show form if user is logged in #}

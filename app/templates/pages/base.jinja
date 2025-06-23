@@ -12,7 +12,7 @@
 
 <!DOCTYPE html>
 
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 
 <head>
 	<meta charset="utf-8">
@@ -24,7 +24,7 @@
 
     <script src="/static/js/utils.js"></script>
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.slate.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.red.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.colors.min.css">
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
@@ -40,12 +40,12 @@
             <ul>
                 {% if session.user_name %}
 
-                    <li>Hello, {{ session.user_name }}</li>
+                    <li>Hello, <strong>{{ session.user_name }}</strong></li>
 
                 {% endif %}
 
                 <li><a href="/">Home</a></li>
-                <li><a href="/things">Things</a></li>
+                <li><a href="/teams">Teams</a></li>
                 <li><a href="/about">About</a></li>
 
                 {% if session.user_id %}

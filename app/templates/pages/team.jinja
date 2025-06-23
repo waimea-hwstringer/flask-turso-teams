@@ -9,27 +9,28 @@
 
 {% block title %}
 
-    Flask Demo - Single Thing
+    Team {{team.code}}
 
 {% endblock %}
 
 
 {% block content %}
 
-    <h1>A Single Thing...</h1>
-
+    <h1>{{team.name}}</h1>
+    <p>{{team.description}}</p>
+    <a>{{team.website}}</a>
 
     <article>
 
         <header>
-            <h3>{{ thing.name }}</h3>
+            <h3>{{ team.name }}</h3>
         </header>
 
-        <p>Price: <strong>${{ thing.price }}</strong></p>
+        <p>Price: <strong>${{ team.code }}</strong></p>
 
         <footer>
 
-            {# Only show delete link if logged in AND owner #}
+            {# Only show delete link if logged in AND owner 
             {% if session.user_id and (thing.user_id == session.user_id) %}
 
                 <a href="/delete/{{ thing.id }}" onclick="return confirm('Really delete?');">Delete</a>
@@ -38,7 +39,7 @@
 
                 Owner: <strong>{{ thing.owner }}</strong>
 
-            {% endif %}
+            {% endif %} #}
 
         </footer>
 
