@@ -16,37 +16,58 @@
 
 {% block content %}
 
-    <h1>{{team.name}}</h1>
-    <p>{{team.description}}</p>
-    <a>{{team.website}}</a>
-
     <article>
 
         <header>
-            <h3>{{ team.name }}</h3>
+            <h1>{{team.name}}</h1>
+            <h3>{{team.code}}</h3>
         </header>
 
-        <p>Price: <strong>${{ team.code }}</strong></p>
+        <p>{{team.description}}</p>
+
+        <a href="https://{{team.website}}">{{team.website}}</a>
+
+        
+        <p>session.user_id = {{session.user_id}}</p>
+        <p>team.manager = {{team.manager}}</p>
 
         <footer>
 
-            {# Only show delete link if logged in AND owner 
-            {% if session.user_id and (thing.user_id == session.user_id) %}
+            {# Only show delete link if logged in AND owner #}
+            {% if session.user_id and (team.manager == session.user_id) %}
 
-                <a href="/delete/{{ thing.id }}" onclick="return confirm('Really delete?');">Delete</a>
+                <p>Manager: <strong>You</strong></p>
+
+                <a role="button" href="/delete/{{team.code}}" onclick="return confirm('Really delete?');">Delete Team</a>
 
             {% else %}
-
-                Owner: <strong>{{ thing.owner }}</strong>
-
-            {% endif %} #}
+            
+                <p>
+                    Manager: <strong>{{ team.manager }}</strong>
+                </p>
+            
+            {% endif %} 
 
         </footer>
 
     </article>
 
+    <article>
+        <header>
+            <h1>Players</h1>
+        </header>
+        <ol>
 
-    <a role="button" href="/things">Back to Thing List</a>
+        </ol>
+        <footer>
+            <p>footer</p>
+        </footer>
+    </article>
+
+    
+
+
+    <a role="button" href="/">Back to Teams</a>
 
 {% endblock %}
 

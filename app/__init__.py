@@ -27,15 +27,8 @@ init_datetime(app)  # Handle UTC dates in timestamps
 #-----------------------------------------------------------
 # Home page route
 #-----------------------------------------------------------
+
 @app.get("/")
-def index():
-    return render_template("pages/home.jinja")
-
-
-#-----------------------------------------------------------
-# Teams page route - Show all the things, and new thing form
-#-----------------------------------------------------------
-@app.get("/teams/")
 def show_all_teams():
     with connect_db() as client:
         # Get all the things from the DB
@@ -45,7 +38,7 @@ def show_all_teams():
         teams = result.rows
 
         # And show them on the page
-        return render_template("pages/teams.jinja", teams=teams)
+        return render_template("pages/home.jinja", teams=teams)
 
 
 #-----------------------------------------------------------
@@ -88,47 +81,56 @@ def show_one_team(code):
 #-----------------------------------------------------------
 @app.post("/add")
 @login_required
-def add_a_thing():
+def add_a_team():
     # Get the data from the form
-    name  = request.form.get("name")
-    price = request.form.get("price")
+    name = request.form.get("name")
+    code = request.form.get("code")
+    desc = request.form.get("description")
+    site = request.form.get("website")
 
     # Sanitise the text inputs
     name = html.escape(name)
+    code = html.escape(code)
+    desc = html.escape(desc)
+    site = html.escape(site)
+
+    #Format the text capitalization
+    name = name.title()
+    code = code.upper()
 
     # Get the user id from the session
     user_id = session["user_id"]
 
     with connect_db() as client:
         # Add the thing to the DB
-        sql = "INSERT INTO things (name, price, user_id) VALUES (?, ?, ?)"
-        params = [name, price, user_id]
+        sql = "INSERT INTO teams (code, name, description, website, manager) VALUES (?, ?, ?, ?, ?)"
+        params = [code, name, desc, site, user_id]
         client.execute(sql, params)
 
         # Go back to the home page
-        flash(f"Thing '{name}' added", "success")
-        return redirect("/things")
+        flash(f"Team '{name}' added", "success")
+        return redirect("/")
 
 
 #-----------------------------------------------------------
 # Route for deleting a thing, Id given in the route
 # - Restricted to logged in users
 #-----------------------------------------------------------
-@app.get("/delete/<int:id>")
+@app.get("/delete/<string:code>")
 @login_required
-def delete_a_thing(id):
+def delete_a_team(code):
     # Get the user id from the session
     user_id = session["user_id"]
 
     with connect_db() as client:
         # Delete the thing from the DB only if we own it
-        sql = "DELETE FROM things WHERE id=? AND user_id=?"
-        params = [id, user_id]
+        sql = "DELETE FROM teams WHERE code=? AND manager=?"
+        params = [code, user_id]
         client.execute(sql, params)
 
         # Go back to the home page
-        flash("Thing deleted", "success")
-        return redirect("/things")
+        flash("Team deleted", "success")
+        return redirect("/")
 
 
 
