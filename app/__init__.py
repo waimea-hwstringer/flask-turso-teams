@@ -32,7 +32,7 @@ init_datetime(app)  # Handle UTC dates in timestamps
 def show_all_teams():
     with connect_db() as client:
         # Get all the things from the DB
-        sql = "SELECT * FROM teams ORDER BY name ASC"
+        sql = "SELECT * FROM teams"
         params=[]
         result = client.execute(sql, params)
         teams = result.rows
@@ -65,14 +65,28 @@ def show_one_team(code):
         result = client.execute(sql, params)
 
         # Did we get a result?
-        if result.rows:
-            # yes, so show it on the page
-            team = result.rows[0]
-            return render_template("pages/team.jinja", team=team)
-
-        else:
+        if not result.rows:
             # No, so show error
             return not_found_error()
+        
+        # yes, so show it on the page
+        team = result.rows[0]
+
+        # Get the thing details from the DB, including the owner info
+        sql = "SELECT * FROM players WHERE team=?"
+        params = [code]
+        result = client.execute(sql, params)
+
+        # Did we get a result?
+        if not result.rows:
+            # No, so show error
+            return not_found_error()
+        
+        # yes, so show it on the page
+        players = result.rows
+            
+        
+        return render_template("pages/team.jinja", team=team, players=players)
 
 
 #-----------------------------------------------------------
@@ -130,6 +144,38 @@ def delete_a_team(code):
 
         # Go back to the home page
         flash("Team deleted", "success")
+        return redirect("/")
+
+#-----------------------------------------------------------
+# Route for adding a thing, using data posted from a form
+# - Restricted to logged in users
+#-----------------------------------------------------------
+@app.post("/add-player")
+@login_required
+def add_a_player():
+    # Get the data from the form
+    name = request.form.get("name")
+    note = request.form.get("note")
+    team = "HRY"
+
+    # Sanitise the text inputs
+    name = html.escape(name)
+    note = html.escape(note)
+
+    #Format the text capitalisation
+    name = name.title()
+
+    # Get the user id from the session
+    user_id = session["user_id"]
+
+    with connect_db() as client:
+        # Add the thing to the DB
+        sql = "INSERT INTO players (name, notes, team) VALUES (?, ?, ?)"
+        params = [name, note, team]
+        client.execute(sql, params)
+
+        # Go back to the home page
+        flash(f"Player '{name}' added to team {team}", "success")
         return redirect("/")
 
 

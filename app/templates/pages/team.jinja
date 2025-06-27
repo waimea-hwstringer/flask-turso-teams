@@ -33,12 +33,10 @@
 
         <footer>
 
-            {# Only show delete link if logged in AND owner #}
+            {# Only show delete link if logged in AND manager #}
             {% if session.user_id and (team.manager == session.user_id) %}
 
                 <p>Manager: <strong>You</strong></p>
-
-                <a role="button" href="/delete/{{team.code}}" onclick="return confirm('Really delete?');">Delete Team</a>
 
             {% else %}
             
@@ -57,15 +55,37 @@
             <h1>Players</h1>
         </header>
         <ol>
-
+            {% for player in players%}
+                <li>
+                    {{player.name}}, {{player.notes}}
+                </li>
+            {% endfor%}
         </ol>
         <footer>
             <p>footer</p>
         </footer>
     </article>
 
+    {# Only show add player if logged in AND manager #}
+    {% if session.user_id and (team.manager == session.user_id) %}
+        <article>
+            <header><h1>Add a Player</h1></header>
+            <form action="/add-player" method="POST">
+                <span>Name</span>
+                <input type="text" name="name" placeholder="Johnny Tickles" required>
+                <span>Notes</span>
+                <input type="text" name="note" placeholder="Our star player">
+                <button>Add Player</button> 
+            </form>
+        </article>
     
+        <article>
+            <a role="button" href="/delete/{{team.code}}" onclick="return confirm('Are you sure you want to delete team {{team.name}}?');">Delete Team</a>
+        </article>
 
+    {%else%}
+
+    {% endif %} 
 
     <a role="button" href="/">Back to Teams</a>
 

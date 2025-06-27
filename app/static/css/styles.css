@@ -2,7 +2,24 @@
   User stylesheet - Building upon PicoCSS
 =====================================================*/
 
+/* TEAM PAGE --------------------------------------------- */
+article header {
+    display: flex;
+    padding: 1rem;
+    margin: 1;
+    gap: 1rem;
+    align-items: baseline;
+}
 
+article header h1, article header p{
+    padding: 0rem;
+    margin: 0;
+    
+}
+
+article form span {
+    padding-left: 0.5rem;
+}
 /* ABOUT PAGE -------------------------------------------- */
 
 #tech-stack {
