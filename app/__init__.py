@@ -218,6 +218,9 @@ def add_user():
     username = request.form.get("username")
     password = request.form.get("password")
 
+    #Format the text capitalisation
+    name = name.title()
+
     with connect_db() as client:
         # Attempt to find an existing record for that user
         sql = "SELECT * FROM users WHERE username = ?"

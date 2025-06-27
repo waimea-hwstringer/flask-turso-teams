@@ -14,38 +14,39 @@
 
 
 {% block content %}
+    <div id="formContainer">
+        <article class="form">
+    
+            <header>
+                <h2>Login...</h2>
+            </header>
+    
+            <form action="/login-user" method="POST">
+    
+                <input
+                    type="text"
+                    name="username"
+                    placeholder="Username"
+                    required
+                >
 
-    <article>
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    required
+                >
 
-        <header>
-            <h2>Login...</h2>
-        </header>
+                <button>Login</button>
 
-        <form action="/login-user" method="POST">
+            </form>
 
-            <input
-                type="text"
-                name="username"
-                placeholder="Username"
-                required
-            >
+            <footer>
+                Or, if you don't have an account, <a href="/register">register</a>
+            </footer>
 
-            <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                required
-            >
-
-            <button>Login</button>
-
-        </form>
-
-        <footer>
-            Or, if you don't have an account, <a href="/register">register</a>
-        </footer>
-
-    </article>
+        </article>
+    </div>
 
 {% endblock %}
 

@@ -16,17 +16,23 @@
 
 
 {% block content %}
-
-  <h1>Teams</h1>
-    
+  <span id="teamHero">
+    Teams
+  </span>
     <div id="teamContainer">
       {% for team in teams %}
        <article class="team">
-         <a href="/team/{{ team.code }}">
-         <h1><strong>{{ team.name }}</strong></h1> </a>
-         <h4>{{team.code}}</h4>
-         <p>{{team.description}}</p>
-         <footer><a href="/team/{{team.code}}">See More</a></footer>
+          <header>
+              <a href="/team/{{team.code}}">
+                <h1><strong>{{ team.name }}</strong></h1> 
+              </a>
+          </header>
+          <h4>{{team.code}}</h4>
+          <p>{{team.description}}</p>
+          <footer>
+            <a href="/team/{{team.code}}">See More</a>
+            <a href="https://www.{{team.website}}">↗</a>
+          </footer>
        </article>
       {% endfor %}
     </div>

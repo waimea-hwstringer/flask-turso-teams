@@ -4,14 +4,47 @@
 
 /* HOME PAGE --------------------------------------------- */
 
+#teamHero {
+    display: flex;
+    justify-content: center;
+    color: var(--pico-h1);
+    background-color: var(--pico-primary-background);
+    font-size: 3rem;
+    font-weight: 700;
+    padding: 1rem;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 1rem;
+}
+
 #teamContainer {
     display: flex;
+    flex-direction: row;
     gap: 1rem;
-    margin-bottom: 5rem;
+    max-width: max-content;
+    flex-wrap: wrap;
+    margin: 3rem;
+    justify-content: center;
 }
 
 .team {
-    width: max-content;
+    width: 16rem;
+    min-height: max-content;
+    display: flex;
+    flex-direction: column;
+}
+
+.team p {
+    flex: 1;
+}
+
+.team footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.team footer a {
+    text-decoration: none;
 }
 
 #formContainer {
@@ -22,6 +55,19 @@
 .form {
     width: 30rem;
 }
+
+#singleTeamContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+button {
+    width: 100%;
+}
+
+
 
 /* TEAM PAGE --------------------------------------------- */
 article header {
@@ -53,7 +99,7 @@ article form span {
 
 #delete {
     text-decoration: none;
-    color: var(--pico-text)
+    color: var(--pico-text);
 }
 
 #delete:hover {
@@ -78,7 +124,7 @@ article form span {
     justify-content: center;
     padding: 2rem;
     margin: 0;
-    margin-top: 3rem;
+    margin-top: 1rem;
     width: 100%;
     max-width: 100%;
 }

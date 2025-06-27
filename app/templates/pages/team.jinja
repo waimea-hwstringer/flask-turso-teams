@@ -16,7 +16,8 @@
 
 {% block content %}
 
-    <article>
+    <div id="singleTeamContainer">
+    <article class="form">
 
         <header>
             <h1>{{team.name}}</h1>
@@ -73,7 +74,7 @@
 
     {# Only show add player if logged in AND manager #}
     {% if session.user_id and (team.manager == session.user_id) %}
-        <article>
+        <article class="form">
             <header><h1>Add a Player</h1></header>
             <form action="/add-player" method="POST">
                 <span>Name</span>
@@ -88,6 +89,8 @@
     {% endif %} 
 
     <a role="button" href="/">Back to Teams</a>
+
+    </div>
 
 {% endblock %}
 
