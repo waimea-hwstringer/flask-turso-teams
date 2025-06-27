@@ -27,9 +27,28 @@
 
         <a href="https://{{team.website}}">{{team.website}}</a>
 
-        
-        <p>session.user_id = {{session.user_id}}</p>
-        <p>team.manager = {{team.manager}}</p>
+        <h2>Players</h2>
+        <ol>
+            {% if players%}
+                {% for player in players%}
+                    <li>
+                        <span>{{player.name}}</span>
+                        {# Only show delete link if logged in AND manager #}
+                        {% if session.user_id and (team.manager == session.user_id) %}
+                            <a id="delete" href="/delete-player/{{team.code}}/{{player.id}}" onclick="return confirm('Are you sure you want to player {{player.name}}?');">🗷</a>
+                        {% endif %}
+                        {% if player.notes %}
+                            <p>"{{player.notes}}"</p>
+                        {% else %}
+                            <p></p>
+                        {% endif %}
+                        
+                    </li>
+                {% endfor%}
+            {% else %}
+                <p>No players!</p>
+            {% endif %}
+        </ol>
 
         <footer>
 
@@ -38,32 +57,18 @@
 
                 <p>Manager: <strong>You</strong></p>
 
+                <a role="button" href="/delete-team/{{team.code}}" onclick="return confirm('Are you sure you want to delete team {{team.name}}?');">Delete Team</a>
+
             {% else %}
             
                 <p>
-                    Manager: <strong>{{ team.manager }}</strong>
+                    Manager: <strong>{{ team.username }}</strong>
                 </p>
-            
+
             {% endif %} 
 
         </footer>
 
-    </article>
-
-    <article>
-        <header>
-            <h1>Players</h1>
-        </header>
-        <ol>
-            {% for player in players%}
-                <li>
-                    {{player.name}}, {{player.notes}}
-                </li>
-            {% endfor%}
-        </ol>
-        <footer>
-            <p>footer</p>
-        </footer>
     </article>
 
     {# Only show add player if logged in AND manager #}
@@ -75,15 +80,10 @@
                 <input type="text" name="name" placeholder="Johnny Tickles" required>
                 <span>Notes</span>
                 <input type="text" name="note" placeholder="Our star player">
+                <input type="hidden" name="team" value="{{team.code}}">
                 <button>Add Player</button> 
             </form>
         </article>
-    
-        <article>
-            <a role="button" href="/delete/{{team.code}}" onclick="return confirm('Are you sure you want to delete team {{team.name}}?');">Delete Team</a>
-        </article>
-
-    {%else%}
 
     {% endif %} 
 

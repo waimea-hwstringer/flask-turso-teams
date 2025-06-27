@@ -2,6 +2,27 @@
   User stylesheet - Building upon PicoCSS
 =====================================================*/
 
+/* HOME PAGE --------------------------------------------- */
+
+#teamContainer {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 5rem;
+}
+
+.team {
+    width: max-content;
+}
+
+#formContainer {
+    display: flex;
+    justify-content: center;
+}
+
+.form {
+    width: 30rem;
+}
+
 /* TEAM PAGE --------------------------------------------- */
 article header {
     display: flex;
@@ -17,8 +38,26 @@ article header h1, article header p{
     
 }
 
+article h2 {
+    margin: 1rem;
+}
+
 article form span {
     padding-left: 0.5rem;
+}
+
+#playerName {
+    padding: 0;
+    margin: 0;
+}
+
+#delete {
+    text-decoration: none;
+    color: var(--pico-text)
+}
+
+#delete:hover {
+    color: var(--pico-primary)
 }
 /* ABOUT PAGE -------------------------------------------- */
 
@@ -32,6 +71,22 @@ article form span {
     flex: 1;
 }
 
+/* MISC ------------------------------------------------ */
+
+#pageFooter {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+    margin: 0;
+    margin-top: 3rem;
+    width: 100%;
+    max-width: 100%;
+}
+
+#pageFooter a {
+    color: var(--pico-text);
+    padding-right: 0.5rem;
+}
 
 /* MESSAGES -------------------------------------------- */
 

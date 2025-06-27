@@ -10,7 +10,7 @@
 
 {% block title %}
 
-    Flask Demo
+    Flask Teams 
 
 {% endblock %}
 
@@ -18,27 +18,26 @@
 {% block content %}
 
   <h1>Teams</h1>
-        
-    {% for team in teams %}
-
-        <article>
-            <a href="/team/{{ team.code }}">
-            <h1><strong>{{ team.name }}</strong></h1> </a>
-            <h4>{{team.code}}</h4>
-            <p>{{team.description}}</p>
-            <footer><a href="/team/{{team.code}}">See More</a></footer>
-        </article>
-
-    {% endfor %}
+    
+    <div id="teamContainer">
+      {% for team in teams %}
+       <article class="team">
+         <a href="/team/{{ team.code }}">
+         <h1><strong>{{ team.name }}</strong></h1> </a>
+         <h4>{{team.code}}</h4>
+         <p>{{team.description}}</p>
+         <footer><a href="/team/{{team.code}}">See More</a></footer>
+       </article>
+      {% endfor %}
+    </div>
 
     {# Only show form if user is logged in #}
     {% if session.user_id %}
-
-        <article>
-
+      <div id="formContainer">
+        <article class="form">
             <h3>Create your own Team</h3>
 
-            <form action="/add" method="POST">
+            <form action="/add-team" method="POST">
 
               <span>Name</span>
               <input type="text" name="name" placeholder="Team One" required> 
@@ -55,9 +54,8 @@
               <button>Create Team</button>
 
             </form>
-
         </article>
-
+      </div>
     {%else%}
     <article>
       <h3>Want your own team?</h3>

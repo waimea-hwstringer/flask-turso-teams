@@ -54,7 +54,8 @@ def show_one_team(code):
                    teams.description,
                    teams.website,
                    teams.manager,
-                   users.id
+                   users.id,
+                   users.username
 
             FROM teams
             JOIN users ON teams.manager = users.id
@@ -77,23 +78,17 @@ def show_one_team(code):
         params = [code]
         result = client.execute(sql, params)
 
-        # Did we get a result?
-        if not result.rows:
-            # No, so show error
-            return not_found_error()
-        
-        # yes, so show it on the page
         players = result.rows
-            
         
         return render_template("pages/team.jinja", team=team, players=players)
+        
 
 
 #-----------------------------------------------------------
-# Route for adding a thing, using data posted from a form
+# Route for adding a team, using data posted from a form
 # - Restricted to logged in users
 #-----------------------------------------------------------
-@app.post("/add")
+@app.post("/add-team")
 @login_required
 def add_a_team():
     # Get the data from the form
@@ -127,10 +122,10 @@ def add_a_team():
 
 
 #-----------------------------------------------------------
-# Route for deleting a thing, Id given in the route
+# Route for deleting a team, Code given in the route
 # - Restricted to logged in users
 #-----------------------------------------------------------
-@app.get("/delete/<string:code>")
+@app.get("/delete-team/<string:code>")
 @login_required
 def delete_a_team(code):
     # Get the user id from the session
@@ -143,11 +138,11 @@ def delete_a_team(code):
         client.execute(sql, params)
 
         # Go back to the home page
-        flash("Team deleted", "success")
+        flash(f"Team {code} deleted", "success")
         return redirect("/")
 
 #-----------------------------------------------------------
-# Route for adding a thing, using data posted from a form
+# Route for adding a player, using data posted from a form
 # - Restricted to logged in users
 #-----------------------------------------------------------
 @app.post("/add-player")
@@ -156,11 +151,12 @@ def add_a_player():
     # Get the data from the form
     name = request.form.get("name")
     note = request.form.get("note")
-    team = "HRY"
+    team = request.form.get("team")
 
     # Sanitise the text inputs
     name = html.escape(name)
     note = html.escape(note)
+    team = html.escape(team)
 
     #Format the text capitalisation
     name = name.title()
@@ -176,9 +172,25 @@ def add_a_player():
 
         # Go back to the home page
         flash(f"Player '{name}' added to team {team}", "success")
-        return redirect("/")
+        return redirect(f"/team/{team}") #redirect to the page the user was on
 
+#-----------------------------------------------------------
+# Route for deleting a player, Id given in the route
+# - Restricted to logged in users
+#-----------------------------------------------------------
+@app.get("/delete-player/<string:code>/<int:id>")
+@login_required
+def delete_a_player(code, id):
+    
+    with connect_db() as client:
+        # Delete the thing from the DB only if we own it
+        sql = "DELETE FROM players WHERE id=? AND team=?"
+        params = [id, code]
+        client.execute(sql, params)
 
+        # Go back to the home page
+        flash(f"Player {id} deleted", "success")
+        return redirect(f"/team/{code}")
 
 #-----------------------------------------------------------
 # User registration form route
